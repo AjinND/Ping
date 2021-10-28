@@ -24,7 +24,7 @@ There are mainly 3 screens in the app:<br>
 
 <h2> Tech Used </h2>
 <ul>
-  <li> React Native </li>
+  <li> React Native with Type Script </li>
   <li> MongoDB </li>
   <li> Apollo Graphql </li>
 </ul>
