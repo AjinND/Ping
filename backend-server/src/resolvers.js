@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { GraphQLUpload, graphqlUploadExpress } = require('graphql-upload');
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
@@ -78,9 +79,11 @@ module.exports = {
         return await db.collection('Users').findOne({_id: ObjectId(input.id)});
       },
 
+      Upload: GraphQLUpload,
       createChatRoom: async (_, {name, imageUri}, {db, user})=> {
         if(!user){ throw new Error('Authentication Failed. Please Sign in'); }
 
+        const { createReadStream, filename, mimetype, encoding } = await imageUri;
         const newChatRoom = {
           name,
           createdAt: new Date().toISOString(),

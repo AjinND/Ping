@@ -16,6 +16,8 @@ const typeDefs = gql`
 
     updateUser(input: UpdateUserInput!): User!
     createChatRoom(name: String!, imageUri: String): ChatRoom!
+
+    addUserToChatRoom(ChatRoomID: ID!, userID:ID!): ChatRoom
   }
 
   input SignUpInput{
@@ -48,7 +50,7 @@ const typeDefs = gql`
     id: ID!
     filename: String!
     mimetype: String!
-    path: String!
+    encoding: String!
   }
   
   type User {
@@ -59,8 +61,8 @@ const typeDefs = gql`
     avatar: String
     status: String
 
-    contacts: [User!]!
-    chatRooms: [ChatRoom!]!
+    contacts: [User!]
+    chatRooms: [ChatRoom!]
   }
 
   type ChatRoom {
@@ -70,7 +72,7 @@ const typeDefs = gql`
     imageUri: String
 
     users: [User!]!
-    messages: [Message!]!
+    messages: [Message!]
     lastMessage: Message!
   }
 

@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const typeDefs = require('./typeDefs');
-// const resolvers = require('./resolvers');
+
 
 dotenv.config();
 const {DB_URI, DB_NAME, JWT_SECRET} = process.env;
@@ -109,6 +109,33 @@ const resolvers = {
         //console.log(result.insertedId);
         return await db.collection('ChatRoom').findOne(result.insertedId);
       },
+
+      addUserToChatRoom: async (_, {ChatRoomID, userID}, {db, user})=> {
+        if(!user){ throw new Error('Authentication Failed. Please Sign in'); }
+  
+        const chatRoom = await db.collection('ChatRoom').findOne({_id: ObjectId(ChatRoomID)});
+        if(!chatRoom){ return null; }
+  
+        //check if the user is already present in chatRoom
+        if(chatRoom.userIds.find((dbId)=> dbId.toString() === userID.toString())){
+          return chatRoom;
+        }
+        //update in the database
+        await db.collection('ChatRoom')
+                  .updateOne({
+                      _id: ObjectId(ChatRoomID)
+                    }, {
+                      // $set used for updating the some specific fields.
+                      // otherwise it replace the whole object.
+                      $push: {
+                      userIds: ObjectId(userID),
+                    }
+                  });
+        //update in the chatRoom
+        chatRoom.userIds.push(ObjectId(userID));
+        return chatRoom;
+      },
+  
 
     },
 

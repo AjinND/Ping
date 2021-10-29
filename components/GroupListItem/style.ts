@@ -28,6 +28,7 @@ const groupStyles = StyleSheet.create({
     userName: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#fff',
     },
     lastMessage: {
         fontSize: 15,

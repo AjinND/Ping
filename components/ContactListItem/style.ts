@@ -28,6 +28,7 @@ const contactStyles = StyleSheet.create({
     userName: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#fff',
     },
     status: {
         color: '#455a64',

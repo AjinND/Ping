@@ -14,6 +14,11 @@ query chatRooms {
     name
     createdAt
     imageUri
+    users{
+      id
+      name
+      phoneno
+    }
   }
 }
 `;
@@ -52,7 +57,14 @@ export default function GroupScreen() {
   useEffect(() => {
     if(data){
       //console.log(data);
-      setGroups(data.chatRooms);
+      const chatrooms: any = []
+      data.chatRooms.map((chatroom: any) => {
+        if(chatroom.users.length!==2){
+          chatrooms.push(chatroom);
+        }
+      });  
+      setGroups(chatrooms); 
+      //setGroups(data.chatRooms);
     }
   }, [data])
 

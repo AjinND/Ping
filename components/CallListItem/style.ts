@@ -23,6 +23,7 @@ const callStyles = StyleSheet.create({
     userName: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: '#fff',
     },
     time: {
         fontSize: 15,
