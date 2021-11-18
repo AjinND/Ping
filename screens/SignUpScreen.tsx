@@ -3,27 +3,9 @@ import { useFonts } from 'expo-font';
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, ActivityIndicator, Alert} from 'react-native';
 
-import {useMutation, gql} from '@apollo/client'
+import { useMutation } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const SIGN_UP_MUTATION = gql`
-mutation signUp($email: String!,$password: String!, $name: String!, $phoneno: String!){
-  signUp(input:{
-    email: $email,
-    password: $password,
-    name: $name,
-    phoneno: $phoneno,
-  }){
-    token,
-    user {
-      id
-      name
-      email
-      phoneno
-    }
-  }
-}
-`;
+import { SIGN_UP_MUTATION } from '../backend-server/src/schema/mutations/mutations';
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState('');

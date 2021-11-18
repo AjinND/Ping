@@ -1,27 +1,15 @@
-import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Alert, FlatList, StyleSheet, View } from 'react-native';
 import ContactListItem from '../components/ContactListItem';
-import contacts from '../data/Users'
 
-const MY_CONTACTS= gql `
-query listUsers {
-  listUsers {
-    id
-    name
-    email
-    phoneno
-    avatar
-    status
-  }
-}
-`;
+import { gql, useQuery } from '@apollo/client';
+import {QUERY_USER_CONTACTS} from '../backend-server/src/schema/queries/queries';
 
 export default function ContactScreen() {
 
   const [contacts, setContacts] = useState([]);
-  const {data, error, loading} = useQuery(MY_CONTACTS);
+  const {data, error, loading} = useQuery(QUERY_USER_CONTACTS);
 
   useEffect(() => {
     if(error){

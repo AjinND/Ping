@@ -23,7 +23,7 @@ const OptionsItem = () => {
   const onLogOut = async () => {
     setModalVisible(!modalVisible);
     await AsyncStorage.removeItem('token');
-    client.resetStore()
+    client.resetStore();
     navigation.navigate('Signin');
   }
 

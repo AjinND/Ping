@@ -1,52 +1,24 @@
 import * as React from 'react';
 import { Alert, FlatList, StyleSheet } from 'react-native';
 import { View } from '../components/Themed';
+import { useEffect, useState } from 'react';
 
 import GroupListItem from '../components/GroupListItem';
 import NewGroupButtonItem from '../components/NewGroupButtonItem';
-import { gql,useMutation, useQuery } from '@apollo/client';
-import { useEffect, useState } from 'react';
 
-const  MY_GROUPS= gql`
-query chatRooms {
-  chatRooms {
-    id
-    name
-    createdAt
-    imageUri
-    users{
-      id
-      name
-      phoneno
-    }
-  }
-}
-`;
-
-const CREATE_CHATROOM = gql`
-mutation Mutation($createChatRoomName: String!, $createChatRoomImageUri: String) {
-  createChatRoom(name: $createChatRoomName, imageUri: $createChatRoomImageUri) {
-    id
-    name
-    imageUri
-    createdAt
-    users {
-      id
-      name
-    }
-  }
-}
-`;
+import { useMutation, useQuery } from '@apollo/client';
+import { CREATE_CHATROOM_MUTATION } from '../backend-server/src/schema/mutations/mutations';
+import { QUERY_USER_CHATROOMS } from '../backend-server/src/schema/queries/queries';
 
 export default function GroupScreen() {
 
   const [groups,setGroups] =  useState(null);
-  const {data, error, loading} = useQuery(MY_GROUPS);
+  const {data, error, loading} = useQuery(QUERY_USER_CHATROOMS);
 
   const [
     newGroup,
     {data:createChatRoomData, error: createChatRoomError, loading: createChatRoomLoading}
-  ] = useMutation(CREATE_CHATROOM, {refetchQueries: [MY_GROUPS]} );
+  ] = useMutation(CREATE_CHATROOM_MUTATION, {refetchQueries: [QUERY_USER_CHATROOMS]} );
 
   useEffect(() => {
     if(error){

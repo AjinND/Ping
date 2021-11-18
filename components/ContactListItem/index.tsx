@@ -3,7 +3,12 @@ import { View, Text, Image } from 'react-native';
 import styles from './style';
 import { TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { gql, useMutation } from '@apollo/client';
+
+import { useMutation } from '@apollo/client';
+import { 
+  CREATE_CHATROOM_MUTATION, 
+  ADD_USER_TO_CHATROOM_MUTATION 
+} from '../../backend-server/src/schema/mutations/mutations'; 
 
 interface ContactListItemProps {
   listUsers: {
@@ -16,52 +21,35 @@ interface ContactListItemProps {
   }
 }
 
-const CREATE_CHATROOM = gql`
-mutation Mutation($createChatRoomName: String!, $createChatRoomImageUri: String) {
-  createChatRoom(name: $createChatRoomName, imageUri: $createChatRoomImageUri) {
-    id
-    name
-    imageUri
-    createdAt
-    users {
-      id
-      name
-    }
-  }
-}
-`;
-
-const ADD_USER_CHATROOM = gql`
-mutation Mutation($chatRoomId: ID!, $userId: ID!) {
-  addUserToChatRoom(ChatRoomID: $chatRoomId, userID: $userId) {
-    name
-    users {
-      name
-      id
-    }
-  }
-}
-`;
-
 const ContactListItem= ( props:ContactListItemProps ) => {
+
+  // console.log(props.listUsers)
   const navigation = useNavigation();
   const [
     newChatRoom,
     {data: createChatRoomData}
-  ] = useMutation(CREATE_CHATROOM);
+  ] = useMutation(CREATE_CHATROOM_MUTATION);
   const [
     addUserToChatRoom,
     {data: addUserToChatRoomData}
-  ] = useMutation(ADD_USER_CHATROOM);
+  ] = useMutation(ADD_USER_TO_CHATROOM_MUTATION);
 
   const onClick = async() => {
+
+    navigation.navigate('ChatRoom',
+      { id: props.listUsers.id,
+        name: props.listUsers.name,
+        image: props.listUsers.avatar 
+      }
+    );
+
     await newChatRoom({
       variables: {
         createChatRoomName: props.listUsers.name,
-          createChatRoomImageUri: props.listUsers.avatar,
-        }
+        createChatRoomImageUri: props.listUsers.avatar,
+        createChatRoomPhoneno: props.listUsers.phoneno,
       }
-    ).then(async(promise) => {
+    }).then(async(promise) => {
         if(promise){
           //console.log(promise);
           await addUserToChatRoom({
@@ -72,18 +60,17 @@ const ContactListItem= ( props:ContactListItemProps ) => {
           })
         }
         return promise;
-      }
-    ).then(async (result) => {
-        if(result){
-          //console.log(result);
-          navigation.navigate('ChatRoom',
-            { id: result.data.createChatRoom.id,
-              name: props.listUsers.name,
-              image: props.listUsers.avatar }
-          );
-        }
-      }
-    );
+      })
+      // .then(async (result) => {
+      //   if(result){
+      //     //console.log(result);
+      //     navigation.navigate('ChatRoom',
+      //       { id: result.data.createChatRoom.id,
+      //         name: props.listUsers.name,
+      //         image: props.listUsers.avatar }
+      //     );
+      //   }
+      // });
   }
   // if(createChatRoomData){
   //   console.log(createChatRoomData);

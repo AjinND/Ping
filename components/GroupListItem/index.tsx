@@ -9,7 +9,16 @@ interface GroupListItemProps {
         id: string,
         createdAt: string,
         name: string,
-        imageUri: string
+        imageUri: string,
+        lastMessage: {
+            id: string,
+            createdAt: string,
+            content: string,
+            user: {
+                id: string,
+                name: string,
+            }
+        }
     }
 }
 
@@ -35,7 +44,8 @@ const GroupListItem= ( props: GroupListItemProps ) => {
                     <View style={styles.innerContainer}>
                         <Text style={styles.userName}>{chatRoom.name}</Text>
                         <Text style={styles.time}>
-                            {moment(chatRoom.createdAt).format('DD/MM/YY')}
+                            {/* {moment(chatRoom.createdAt).format('DD/MM/YY')} */}
+                            {chatRoom.lastMessage && moment(chatRoom.lastMessage.createdAt).format('DD/MM/YY')}
                         </Text>
                     </View>
                     <Text 
@@ -43,8 +53,9 @@ const GroupListItem= ( props: GroupListItemProps ) => {
                         numberOfLines={1} 
                         style={styles.lastMessage}
                     >
-                        {/* {chatRoom.lastMessage.content} */}
-                        Hello.. This is a message!
+                        {
+                            chatRoom.lastMessage ? `${chatRoom.lastMessage.user.name} : ${chatRoom.lastMessage.content}` : ""
+                        }
                     </Text>
                 </View>
             </View>

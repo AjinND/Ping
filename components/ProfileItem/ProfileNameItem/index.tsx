@@ -1,33 +1,16 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
-import { Entypo, Feather, FontAwesome5 } from '@expo/vector-icons';
+import { Entypo, FontAwesome5 } from '@expo/vector-icons';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Alert, Modal, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import styles from './style';
 
-const CURRENT_USER = gql`
-query listCurrentUser {
-    listCurrentUser {
-      id
-      name
-      status
-      avatar
-    }
-}`
-;
-const UPDATE_USER = gql`
-mutation updateUser($updateUserInput: UpdateUserInput!) {
-    updateUser(input: $updateUserInput) {
-      name
-      avatar
-      status
-      id
-    }
-}
-`;
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { QUERY_CURRENT_USER } from '../../../backend-server/src/schema/queries/queries';
+import { UPDATE_USER_MUTATION } from '../../../backend-server/src/schema/mutations/mutations';
+
 export default function ProfileNameItem() {
 
-    const {data, error, loading} = useQuery(CURRENT_USER);
+    const {data, error, loading} = useQuery(QUERY_CURRENT_USER);
     useEffect(() => {
         if(error){
           Alert.alert("Something went Wrong! Please reload.");
@@ -40,7 +23,7 @@ export default function ProfileNameItem() {
         }
     }, [data]);
     
-    const [updateUser] = useMutation(UPDATE_USER, {refetchQueries: [CURRENT_USER]});
+    const [updateUser] = useMutation(UPDATE_USER_MUTATION, {refetchQueries: [QUERY_CURRENT_USER]});
 
     const [modalVisible, setModalVisible] = useState(false);
     const [name,setName] = useState();

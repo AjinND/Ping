@@ -1,26 +1,11 @@
-import { gql, useMutation } from '@apollo/client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 
-
-const SIGN_IN_MUTATION =gql`
-mutation signIn($email: String!,$password: String!){
-  signIn(input: {
-     email: $email,
-     password: $password
-  }) {
-    token
-    user {
-      name
-      phoneno
-      email
-    }
-  }
-}
-`;
+import { useMutation } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SIGN_IN_MUTATION } from '../backend-server/src/schema/mutations/mutations';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');

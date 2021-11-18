@@ -1,33 +1,19 @@
 import * as React from 'react';
 import { Alert, FlatList, StyleSheet } from 'react-native';
-import { View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-
-import ChatListItem from '../components/ChatListItem';
-import FloatingButtonItem from '../components/FloatingButtonItem';
-import { gql, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 
-const  MY_CHATS= gql`
-query chatRooms {
-  chatRooms {
-    id
-    name
-    createdAt
-    imageUri
-    users{
-      id
-      name
-      phoneno
-    }
-  }
-}
-`;
+import { View } from '../components/Themed';
+import { RootTabScreenProps } from '../types';
+import ChatListItem from '../components/ChatListItem';
+import FloatingButtonItem from '../components/FloatingButtonItem';
+
+import { useQuery } from '@apollo/client';
+import { QUERY_USER_CHATROOMS } from '../backend-server/src/schema/queries/queries';
 
 export default function ChatScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
   const [chats,setChats] =  React.useState();
-  const {data, error, loading} = useQuery(MY_CHATS);
+  const {data, error, loading} = useQuery(QUERY_USER_CHATROOMS);
 
   useEffect(() => {
     if(error){

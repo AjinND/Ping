@@ -4,18 +4,27 @@ const { gql } = require('apollo-server');
 // your data.
 
 const typeDefs = gql`
+
+  type Subscription {
+    onCreateMessage: Message!
+  }
+
   type Query {
     listCurrentUser: User!
     listUsers: [User!]!
     chatRooms: [ChatRoom!]!
+    messagesByChatRooms(chatRoomId: ID!): [Message!]
   }
 
   type Mutation {
     signUp(input: SignUpInput!): AuthUser!
     signIn(input: SignInInput!): AuthUser!
 
+    createChatRoom(name: String!, imageUri: String, phoneno: String): ChatRoom!
+    createMessage(content: String!, userId: ID!, chatRoomId: ID!): Message!
+
     updateUser(input: UpdateUserInput!): User!
-    createChatRoom(name: String!, imageUri: String): ChatRoom!
+    updateChatRoom(chatRoomId: ID!, lastMessageId: ID!): ChatRoom!
 
     addUserToChatRoom(ChatRoomID: ID!, userID:ID!): ChatRoom
   }
@@ -63,27 +72,32 @@ const typeDefs = gql`
 
     contacts: [User!]
     chatRooms: [ChatRoom!]
+    messages: [Message!]
   }
 
   type ChatRoom {
     id: ID!
     createdAt: String!
+    updatedAt: String
     name: String!
     imageUri: String
 
     users: [User!]!
     messages: [Message!]
-    lastMessage: Message!
+    lastMessageId: ID!
+    lastMessage: Message
   }
 
   type Message {
     id: ID!
     content: String!
     createdAt: String!
-
+    userId: ID!
+    chatRoomId: ID!
+    
     user: User!
     chatRoom: ChatRoom!
   }
 `;
 
-module.exports = typeDefs;
+module.exports = {typeDefs};

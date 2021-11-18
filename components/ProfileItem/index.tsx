@@ -1,40 +1,23 @@
-import { gql, useQuery, useMutation } from '@apollo/client';
 import { FontAwesome5, Foundation } from '@expo/vector-icons';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Alert, Image, Pressable, Text, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import styles from './style';
+
 import ProfileBioItem from './ProfileBioItem';
 import ProfileNameItem from './ProfileNameItem';
-import styles from './style';
-import * as ImagePicker from 'expo-image-picker';
 
-const CURRENT_USER = gql`
-query listCurrentUser {
-    listCurrentUser {
-      id
-      name
-      status
-      avatar
-    }
-}`
-;
-const UPDATE_USER = gql`
-mutation updateUser($updateUserInput: UpdateUserInput!) {
-    updateUser(input: $updateUserInput) {
-      name
-      avatar
-      status
-      id
-    }
-}
-`;
+import { useQuery } from '@apollo/client';
+import { QUERY_CURRENT_USER } from '../../backend-server/src/schema/queries/queries';
+
 export default function ProfileItem() {
 
     const default_image = require('../../assets/images/BG.png');
     const [avatar,setAvatar] = useState('');
-    const [user_id,setUser_id] = useState();
+    const [phone,setPhone] = useState();
 
-    const {data, error, loading} = useQuery(CURRENT_USER);
+    const {data, error, loading} = useQuery(QUERY_CURRENT_USER);
     useEffect(() => {
         if(error){
           Alert.alert("Something went Wrong! Please reload.");
@@ -42,7 +25,8 @@ export default function ProfileItem() {
     }, [error]);
     useEffect(() => {
         if(data){
-            setUser_id(data.listCurrentUser.id);
+            //console.log(data.listCurrentUser.phoneno);
+            setPhone(data.listCurrentUser.phoneno);
         }
     }, [data]);
 
@@ -110,7 +94,7 @@ export default function ProfileItem() {
                     />
                     <View style={styles.nameConatiner}>
                         <Text style={styles.textCaption}>Phone</Text>
-                        <Text style={styles.textInfo}>9545954512</Text>
+                        <Text style={styles.textInfo}>{phone}</Text>
                     </View>
                 </View>
             </View>
