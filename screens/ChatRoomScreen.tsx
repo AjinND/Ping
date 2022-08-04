@@ -23,7 +23,7 @@ const ChatRoomScreen = () => {
     } = useSubscription(NEW_MESSAGE_SUBSCRIPTION);
 
     useEffect(() => {
-        //console.log('gf');
+        // console.log('gf');
         if(!newMessageSubscriptionLoading){
             console.log(newMessageSubscriptionData);
         }
@@ -50,7 +50,7 @@ const ChatRoomScreen = () => {
     useEffect(() => {
         if(data){
             const messageData = data.messagesByChatRooms;
-            //console.log(data);
+            // console.log(data);
             setMessages(messageData);
         }
     }, [data]);

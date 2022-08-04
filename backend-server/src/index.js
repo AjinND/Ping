@@ -1,3 +1,4 @@
+// const { ApolloServer } = require('apollo-server');
 const { ApolloServer } = require('apollo-server-express');
 const { PubSub } = require('graphql-subscriptions');
 const { MongoClient, ObjectId } = require('mongodb');
@@ -81,8 +82,6 @@ start();
 //   await client.connect();
 //   const db = client.db(DB_NAME);
 
-//   // The ApolloServer constructor requires two parameters: your schema
-//   // definition and your set of resolvers.
 //   const server = new ApolloServer({ 
 //     typeDefs, 
 //     resolvers,
@@ -92,7 +91,6 @@ start();
 //       return {
 //         db,
 //         user,
-//         pubsub,
 //       }
 //     },
 //   });

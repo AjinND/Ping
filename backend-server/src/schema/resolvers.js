@@ -197,7 +197,7 @@ const resolvers = {
       const newMessageData = await db.collection('Messages').findOne(result.insertedId);
       // console.log(newMessageData);
       await pubsub.publish(NEW_MESSAGE, {
-        onCreateMessage: newMessageData,
+        onCreateMessage: await newMessageData,
       });
 
       return newMessageData;

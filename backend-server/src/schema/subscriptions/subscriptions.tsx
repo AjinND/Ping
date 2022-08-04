@@ -6,6 +6,8 @@ subscription onCreateMessage {
     id
     createdAt
     content
+    userId
+    chatRoomId
   }
 }
 `;
