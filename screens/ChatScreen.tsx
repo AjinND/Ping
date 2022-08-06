@@ -1,46 +1,48 @@
-import * as React from 'react';
-import { Alert, FlatList, StyleSheet } from 'react-native';
-import { useEffect } from 'react';
+import * as React from "react";
+import { Alert, FlatList, StyleSheet } from "react-native";
+import { useEffect } from "react";
 
-import { View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-import ChatListItem from '../components/ChatListItem';
-import FloatingButtonItem from '../components/FloatingButtonItem';
+import { View } from "../components/Themed";
+import { RootTabScreenProps } from "../types";
+import ChatListItem from "../components/ChatListItem";
+import FloatingButtonItem from "../components/FloatingButtonItem";
 
-import { useQuery } from '@apollo/client';
-import { QUERY_USER_CHATROOMS } from '../backend-server/src/schema/queries/queries';
+import { useQuery } from "@apollo/client";
+import { QUERY_USER_CHATROOMS } from "../backend-server/src/schema/queries/queries";
 
-export default function ChatScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-
-  const [chats,setChats] =  React.useState();
-  const {data, error, loading} = useQuery(QUERY_USER_CHATROOMS);
+export default function ChatScreen({
+  navigation,
+}: RootTabScreenProps<"TabOne">) {
+  const [chats, setChats] = React.useState();
+  const { data, error, loading } = useQuery(QUERY_USER_CHATROOMS);
 
   useEffect(() => {
-    if(error){
+    if (error) {
+      console.log(error);
       Alert.alert("Something went Wrong! Please reload.");
     }
-  }, [error])
+  }, [error]);
 
   useEffect(() => {
-    if(data){
-      const chatrooms: any = []
+    if (data) {
+      const chatrooms: any = [];
       data.chatRooms.map((chatroom: any) => {
-        if(chatroom.users.length===2){
+        if (chatroom.users.length === 2) {
           chatrooms.push(chatroom);
         }
-      });  
-      setChats(chatrooms);   
+      });
+      setChats(chatrooms);
       //console.log(chatrooms);
     }
-  }, [data])
+  }, [data]);
 
   return (
     <View style={styles.container}>
       <FlatList
-        style={{width: '100%'}}
+        style={{ width: "100%" }}
         data={chats}
-        renderItem={ ( {item} )=> <ChatListItem chatRoom={item} /> }
-        keyExtractor={ (item) => item.id } 
+        renderItem={({ item }) => <ChatListItem chatRoom={item} />}
+        keyExtractor={(item) => item.id}
       />
       <FloatingButtonItem />
     </View>
@@ -50,16 +52,16 @@ export default function ChatScreen({ navigation }: RootTabScreenProps<'TabOne'>)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });
