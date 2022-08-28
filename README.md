@@ -35,7 +35,7 @@ There are mainly 3 screens in the app:<br>
   <li> [x] Basic Email Authentication  </li>
   <li> [x] Create Chat Rooms </li>
   <li> [x] Filtering Group and Personal Chats </li>
-  <li> [ ] Realtime Messaging </li>
+  <li> [x] Realtime Messaging </li>
   <li> [ ] Voice and Video Call </li>
   <li> [ ] Message Status and Typing Indicators </li>
   <li> [ ] Notifications </li>
